@@ -1,15 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import TableRow from '../TableRow/TableRow';
-import ToSortHeader from '../ToSortHeader/ToSortHeader';
-import './Table.css';
+import TableRow from "../TableRow/TableRow";
+import ToSortHeader from "../ToSortHeader/ToSortHeader";
+import "./Table.css";
 
-const url = `https://fcctop100.herokuapp.com/api/fccusers/top/`;
-
-const sortByMapping = [
-  {type: 'past30Days', heading: 'Points in past 30 days'},
-  {type: 'allTime', heading: 'All time points'},
-];
+const sortByMapping = [{ type: "allTime", heading: "points" }];
 
 class Table extends Component {
   constructor() {
@@ -22,72 +17,41 @@ class Table extends Component {
       recentDataDesc: true,
       allTimeDataDesc: false,
     };
+    this.getData = this.getData.bind(this);
   }
+  async getData() {
+    const result = await fetch(
+      "https://docs.google.com/spreadsheets/d/17JQhV5VVbawvPKZgrFozz2gs7robPFZlN3eGk3TAUw8/gviz/tq?tq=select+B%2cF+order+by+F+desc+limit+10"
+    );
+    const data = await result.text();
 
-  urlGenerator(slug) {
-    return url + slug;
+    const rows = JSON.parse(data.slice(47, -2)).table.rows;
+    const parsingRows = rows.map((row) => {
+      return { username: row.c[0].v, point: row.c[1].v };
+    });
+    this.setState({ defaultData: parsingRows });
   }
-
   componentDidMount() {
-    this.fetchData(this.urlGenerator('recent'), 'recent');
-    this.fetchData(this.urlGenerator('alltime'), 'allTime');
+    this.interval = setInterval(this.getData, 10000);
   }
-
-  fetchData(url, type) {
-    fetch(url)
-    .then((res) => res.json())
-    .then((data) => {
-      if (type === 'recent') {
-        this.setState({
-          defaultData: data,
-          recentData: data,
-        });
-      } else if (type === 'allTime') {
-        this.setState({
-          allTimeData: data,
-        });
-      }
-    })
-    .catch((err) => console.err('err::', err))
+  componentWillUnmount() {
+    // Clear the interval right before component unmount
+    clearInterval(this.interval);
   }
-
-  handleSort = (sortType) => {    
-    if (sortType === 'past30Days') {
-      this.sortRowsRecentData();
-    }
-
-    else if (sortType === 'allTime') {
-      this.sortAllTimeData();
-    }
-  }
-
-  sortRowsRecentData() {
-    const { recentData, recentDataDesc } = this.state;
-
-    const sortedRecentData = recentDataDesc ? recentData.sort((a, b) => a.recent - b.recent) : recentData.sort((a, b) => b.recent - a.recent);
-    this.setState({
-      defaultData: sortedRecentData,
-      recentDataDesc: !this.state.recentDataDesc,
-    });
-  }
-
-  sortAllTimeData() {
-    const { allTimeData, allTimeDataDesc } = this.state;
-
-    const sortedAllTimeData = allTimeDataDesc ? allTimeData.sort((a, b) => a.alltime - b.alltime) : allTimeData.sort((a, b) => b.alltime - a.alltime);
-    this.setState({
-      defaultData: sortedAllTimeData,
-      allTimeDataDesc: !this.state.allTimeDataDesc,
-    });
-  }
-
   render() {
     const rows = this.state.defaultData.map((rowData, i) => {
-      return <TableRow key={i} id={i+1} rowData={rowData} />
+      return <TableRow key={i} id={i + 1} rowData={rowData} />;
     });
 
     const sorters = sortByMapping.map((toSortBy, i) => {
-      return <ToSortHeader key={i} sortBy={toSortBy.type} heading={toSortBy.heading} onClick={this.handleSort} />
+      return (
+        <ToSortHeader
+          key={i}
+          sortBy={toSortBy.type}
+          heading={toSortBy.heading}
+          onClick={this.handleSort}
+        />
+      );
     });
 
     return (
@@ -99,9 +63,9 @@ class Table extends Component {
             {sorters}
           </tr>
           {rows}
-          </tbody>
+        </tbody>
       </table>
-    )
+    );
   }
 }
 

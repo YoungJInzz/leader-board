@@ -6,9 +6,11 @@
   border-radius: 50px;
 }
 
-td, a {
+td,
+a {
   font-size: 14px;
   font-weight: 600;
+  text-align: center;
   color: #34495e;
 }
 
@@ -29,5 +31,5 @@ tr:nth-child(even) td {
 }
 
 tr:nth-child(odd) td {
-  background-color: rgb(245,245,245);
+  background-color: rgb(245, 245, 245);
 }
