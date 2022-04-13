@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import "./TableRow.css";
-
+import { getTime } from "../../lib/util";
 const TableRow = (props) => {
   const { point, username } = props.rowData;
 
@@ -12,7 +12,7 @@ const TableRow = (props) => {
       <td align="left">
         <span className="camper-name">{username}</span>
       </td>
-      <td>{point}</td>
+      <td>{getTime(point)}</td>
     </tr>
   );
 };

@@ -4,7 +4,7 @@ import TableRow from "../TableRow/TableRow";
 import ToSortHeader from "../ToSortHeader/ToSortHeader";
 import "./Table.css";
 
-const sortByMapping = [{ type: "allTime", heading: "points" }];
+const sortByMapping = [{ type: "allTime", heading: "time" }];
 
 class Table extends Component {
   constructor() {
@@ -21,7 +21,7 @@ class Table extends Component {
   }
   async getData() {
     const result = await fetch(
-      "https://docs.google.com/spreadsheets/d/17JQhV5VVbawvPKZgrFozz2gs7robPFZlN3eGk3TAUw8/gviz/tq?tq=select+B%2cF+order+by+F+desc+limit+10"
+      "https://docs.google.com/spreadsheets/d/17JQhV5VVbawvPKZgrFozz2gs7robPFZlN3eGk3TAUw8/gviz/tq?tq=select+B%2cG+order+by+G+asc+limit+10"
     );
     const data = await result.text();
 
@@ -32,7 +32,8 @@ class Table extends Component {
     this.setState({ defaultData: parsingRows });
   }
   componentDidMount() {
-    this.interval = setInterval(this.getData, 10000);
+    this.getData();
+    this.interval = setInterval(this.getData, 30000);
   }
   componentWillUnmount() {
     // Clear the interval right before component unmount
