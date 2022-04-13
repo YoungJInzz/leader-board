@@ -12,6 +12,9 @@ class Table extends Component {
 
     this.state = {
       defaultData: [],
+      first: [],
+      second: [],
+      third: [],
       recentData: [],
       allTimeData: [],
       recentDataDesc: true,
@@ -21,7 +24,7 @@ class Table extends Component {
   }
   async getData() {
     const result = await fetch(
-      "https://docs.google.com/spreadsheets/d/17JQhV5VVbawvPKZgrFozz2gs7robPFZlN3eGk3TAUw8/gviz/tq?tq=select+B%2cG+order+by+G+asc+limit+10"
+      "https://docs.google.com/spreadsheets/d/17JQhV5VVbawvPKZgrFozz2gs7robPFZlN3eGk3TAUw8/gviz/tq?tq=select%20B%2CG%20where%20G%20is%20not%20null%20order%20by%20G%20asc%20limit%2010"
     );
     const data = await result.text();
 
@@ -29,11 +32,16 @@ class Table extends Component {
     const parsingRows = rows.map((row) => {
       return { username: row.c[0].v, point: row.c[1].v };
     });
+    this.setState({
+      first: parsingRows.slice(0, 2),
+      second: parsingRows.slice(2, 5),
+      third: parsingRows.slice(5, 10),
+    });
     this.setState({ defaultData: parsingRows });
   }
   componentDidMount() {
     this.getData();
-    this.interval = setInterval(this.getData, 30000);
+    this.interval = setInterval(this.getData, 15000);
   }
   componentWillUnmount() {
     // Clear the interval right before component unmount

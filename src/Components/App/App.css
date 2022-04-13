@@ -7,13 +7,16 @@
   height: 100px;
 }
 
-.App-header, .App-footer, .main-header {
+.App-header,
+.App-footer,
+.main-header {
   background-color: #3498db;
   color: white;
 }
 
-.App-header, .App-footer {
-  padding: 20px;  
+.App-header,
+.App-footer {
+  padding: 20px;
 }
 
 .App-title {
@@ -32,7 +35,10 @@
 }
 
 .overflow-table {
-  overflow-x:auto;
+  overflow-x: auto;
+}
+.leaderWrapper {
+  /* display: flex; */
 }
 
 /* @keyframes App-logo-spin {

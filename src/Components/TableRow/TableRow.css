@@ -8,7 +8,7 @@
 
 td,
 a {
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 600;
   text-align: center;
   color: #34495e;
@@ -26,10 +26,21 @@ a:visited {
   color: #2980b9;
 }
 
-tr:nth-child(even) td {
+/* tr:nth-child(even) td {
   background-color: rgba(250, 250, 250);
 }
 
 tr:nth-child(odd) td {
   background-color: rgb(245, 245, 245);
+} */
+tr:nth-child(n + 1):nth-child(-n + 3) td {
+  background-color: #fcb97d;
+}
+
+tr:nth-child(n + 4):nth-child(-n + 6) td {
+  background-color: #edd892;
+}
+
+tr:nth-child(n + 7) td {
+  background-color: #b5b8a3;
 }
