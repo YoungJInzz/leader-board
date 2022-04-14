@@ -24,7 +24,7 @@ class Table extends Component {
   }
   async getData() {
     const result = await fetch(
-      "https://docs.google.com/spreadsheets/d/17JQhV5VVbawvPKZgrFozz2gs7robPFZlN3eGk3TAUw8/gviz/tq?tq=select%20B%2CG%20where%20G%20is%20not%20null%20order%20by%20G%20asc%20limit%2010"
+      "https://docs.google.com/spreadsheets/d/17JQhV5VVbawvPKZgrFozz2gs7robPFZlN3eGk3TAUw8/gviz/tq?tq=select%20B%2CG%20where%20G%20is%20not%20null%20and%20B%20is%20not%20null%20order%20by%20G%20asc%20limit%2010"
     );
     const data = await result.text();
 
